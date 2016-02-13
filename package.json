@@ -1,0 +1,9 @@
+{
+  "name": "hideable",
+  "version": "1.0.0",
+  "main": "./js/src/Hideable",
+  "dependencies": {
+    "define": "aleclarson/define#1.0.0",
+    "reactive-var": "aleclarson/reactive-var#1.0.6"
+  }
+}
