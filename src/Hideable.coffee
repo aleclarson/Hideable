@@ -1,24 +1,46 @@
 
-ReactiveVar = require "reactive-var"
+{ isType, validateTypes } = require "type-utils"
+
 define = require "define"
+Event = require "event"
 
-module.exports = (obj, config = {}) ->
+module.exports = (self, config = {}) ->
 
-  isHiding = ReactiveVar config.isHiding ?= no
-  onShow = config.onShow ?= emptyFunction
-  onHide = config.onHide ?= emptyFunction
+  validateTypes config,
+    isHiding: [ Boolean, Void ]
+    show: Function
+    hide: Function
+    onShowStart: [ Function, Void ]
+    onShowEnd: [ Function, Void ]
+    onHideStart: [ Function, Void ]
+    onHideEnd: [ Function, Void ]
 
-  define obj,
+  { show, hide } = config
 
-    isHiding: get: ->
-      isHiding.get()
+  define self,
 
-    show: ->
-      return unless isHiding
-      isHiding.set no
-      onShow()
+    isHiding:
+      value: config.isHiding
+      reactive: yes
 
-    hide: ->
-      return if isHiding
-      isHiding.set yes
-      onHide()
+    show: (args...) ->
+      return if @isHiding is no
+      @isHiding = no
+      @willShow.emitArgs args
+      args.push @didShow.emit
+      show.apply this, args
+
+    hide: (args...) ->
+      return if @isHiding is yes
+      @isHiding = yes
+      @willHide.emitArgs args
+      args.push @didHide.emit
+      hide.apply this, args
+
+    willShow: Event config.onShowStart
+
+    didShow: Event config.onShowEnd
+
+    willHide: Event config.onHideStart
+
+    didHide: Event config.onHideEnd

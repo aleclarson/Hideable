@@ -4,6 +4,7 @@
   "main": "./js/src/Hideable",
   "dependencies": {
     "define": "aleclarson/define#1.0.0",
-    "reactive-var": "aleclarson/reactive-var#1.0.6"
+    "event": "aleclarson/event#1.0.0",
+    "type-utils": "aleclarson/type-utils#1.0.0"
   }
 }
