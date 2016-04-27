@@ -1,7 +1,6 @@
-var Event, define, isType, ref, validateTypes,
-  slice = [].slice;
+var Event, Null, Void, define, isType, ref, validateTypes;
 
-ref = require("type-utils"), isType = ref.isType, validateTypes = ref.validateTypes;
+ref = require("type-utils"), Void = ref.Void, Null = ref.Null, isType = ref.isType, validateTypes = ref.validateTypes;
 
 define = require("define");
 
@@ -13,7 +12,7 @@ module.exports = function(self, config) {
     config = {};
   }
   validateTypes(config, {
-    isHiding: [Boolean, Void],
+    isHiding: [Boolean, Null],
     show: Function,
     hide: Function,
     onShowStart: [Function, Void],
@@ -28,23 +27,31 @@ module.exports = function(self, config) {
       reactive: true
     },
     show: function() {
-      var args;
-      args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+      var arg, args, i, len;
       if (this.isHiding === false) {
         return;
       }
       this.isHiding = false;
+      args = [];
+      for (i = 0, len = arguments.length; i < len; i++) {
+        arg = arguments[i];
+        args.push(arg);
+      }
       this.willShow.emitArgs(args);
       args.push(this.didShow.emit);
       return show.apply(this, args);
     },
     hide: function() {
-      var args;
-      args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+      var arg, args, i, len;
       if (this.isHiding === true) {
         return;
       }
       this.isHiding = true;
+      args = [];
+      for (i = 0, len = arguments.length; i < len; i++) {
+        arg = arguments[i];
+        args.push(arg);
+      }
       this.willHide.emitArgs(args);
       args.push(this.didHide.emit);
       return hide.apply(this, args);

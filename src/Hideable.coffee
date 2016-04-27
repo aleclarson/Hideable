@@ -1,5 +1,5 @@
 
-{ isType, validateTypes } = require "type-utils"
+{ Void, Null, isType, validateTypes } = require "type-utils"
 
 define = require "define"
 Event = require "event"
@@ -7,7 +7,7 @@ Event = require "event"
 module.exports = (self, config = {}) ->
 
   validateTypes config,
-    isHiding: [ Boolean, Void ]
+    isHiding: [ Boolean, Null ]
     show: Function
     hide: Function
     onShowStart: [ Function, Void ]
@@ -23,16 +23,20 @@ module.exports = (self, config = {}) ->
       value: config.isHiding
       reactive: yes
 
-    show: (args...) ->
+    show: ->
       return if @isHiding is no
       @isHiding = no
+      args = [] # Cannot leak the 'arguments' object.
+      args.push arg for arg in arguments
       @willShow.emitArgs args
       args.push @didShow.emit
       show.apply this, args
 
-    hide: (args...) ->
+    hide: ->
       return if @isHiding is yes
       @isHiding = yes
+      args = [] # Cannot leak the 'arguments' object.
+      args.push arg for arg in arguments
       @willHide.emitArgs args
       args.push @didHide.emit
       hide.apply this, args
