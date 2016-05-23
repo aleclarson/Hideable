@@ -1,19 +1,24 @@
 
-{ Void, Null, isType, validateTypes } = require "type-utils"
+require "isDev"
 
+assertTypes = require "assertTypes"
 define = require "define"
 Event = require "event"
+Null = require "Null"
 
-module.exports = (self, config = {}) ->
-
-  validateTypes config,
+if isDev
+  configTypes =
     isHiding: [ Boolean, Null ]
     show: Function
     hide: Function
-    onShowStart: [ Function, Void ]
-    onShowEnd: [ Function, Void ]
-    onHideStart: [ Function, Void ]
-    onHideEnd: [ Function, Void ]
+    onShowStart: Function.Maybe
+    onShowEnd: Function.Maybe
+    onHideStart: Function.Maybe
+    onHideEnd: Function.Maybe
+
+module.exports = (self, config) ->
+
+  assertTypes config, configTypes if isDev
 
   { show, hide } = config
 

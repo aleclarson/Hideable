@@ -1,25 +1,32 @@
-var Event, Null, Void, define, isType, ref, validateTypes;
+var Event, Null, assertTypes, configTypes, define;
 
-ref = require("type-utils"), Void = ref.Void, Null = ref.Null, isType = ref.isType, validateTypes = ref.validateTypes;
+require("isDev");
+
+assertTypes = require("assertTypes");
 
 define = require("define");
 
 Event = require("event");
 
-module.exports = function(self, config) {
-  var hide, show;
-  if (config == null) {
-    config = {};
-  }
-  validateTypes(config, {
+Null = require("Null");
+
+if (isDev) {
+  configTypes = {
     isHiding: [Boolean, Null],
     show: Function,
     hide: Function,
-    onShowStart: [Function, Void],
-    onShowEnd: [Function, Void],
-    onHideStart: [Function, Void],
-    onHideEnd: [Function, Void]
-  });
+    onShowStart: Function.Maybe,
+    onShowEnd: Function.Maybe,
+    onHideStart: Function.Maybe,
+    onHideEnd: Function.Maybe
+  };
+}
+
+module.exports = function(self, config) {
+  var hide, show;
+  if (isDev) {
+    assertTypes(config, configTypes);
+  }
   show = config.show, hide = config.hide;
   return define(self, {
     isHiding: {
