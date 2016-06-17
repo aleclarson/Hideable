@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "main": "./js/src/Hideable",
   "dependencies": {
+    "Event": "aleclarson/Event#2.0.0",
     "Null": "aleclarson/Null#1.0.0",
     "assertTypes": "aleclarson/assertTypes#1.0.0",
     "define": "aleclarson/define#1.0.0",
-    "event": "aleclarson/event#1.0.0",
     "isDev": "aleclarson/isDev#1.0.0"
   },
   "lotus": {

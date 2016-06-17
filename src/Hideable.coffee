@@ -3,7 +3,7 @@ require "isDev"
 
 assertTypes = require "assertTypes"
 define = require "define"
-Event = require "event"
+Event = require "Event"
 Null = require "Null"
 
 if isDev
@@ -29,20 +29,28 @@ module.exports = (self, config) ->
       reactive: yes
 
     show: ->
+
       return if @isHiding is no
       @isHiding = no
+
       args = [] # Cannot leak the 'arguments' object.
       args.push arg for arg in arguments
-      @willShow.emitArgs args
+
+      @willShow.emit.apply this, args
+
       args.push @didShow.emit
       show.apply this, args
 
     hide: ->
+
       return if @isHiding is yes
       @isHiding = yes
+
       args = [] # Cannot leak the 'arguments' object.
       args.push arg for arg in arguments
-      @willHide.emitArgs args
+
+      @willHide.emit.apply this, args
+
       args.push @didHide.emit
       hide.apply this, args
 

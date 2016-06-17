@@ -6,7 +6,7 @@ assertTypes = require("assertTypes");
 
 define = require("define");
 
-Event = require("event");
+Event = require("Event");
 
 Null = require("Null");
 
@@ -44,7 +44,7 @@ module.exports = function(self, config) {
         arg = arguments[i];
         args.push(arg);
       }
-      this.willShow.emitArgs(args);
+      this.willShow.emit.apply(this, args);
       args.push(this.didShow.emit);
       return show.apply(this, args);
     },
@@ -59,7 +59,7 @@ module.exports = function(self, config) {
         arg = arguments[i];
         args.push(arg);
       }
-      this.willHide.emitArgs(args);
+      this.willHide.emit.apply(this, args);
       args.push(this.didHide.emit);
       return hide.apply(this, args);
     },
