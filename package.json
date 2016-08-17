@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "./js/src/Hideable",
   "dependencies": {
-    "Event": "aleclarson/Event#2.0.0",
+    "Event": "aleclarson/Event#2.0.1",
     "Null": "aleclarson/Null#1.0.0",
     "assertTypes": "aleclarson/assertTypes#1.0.0",
     "define": "aleclarson/define#1.0.0",
