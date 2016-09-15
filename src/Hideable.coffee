@@ -6,19 +6,20 @@ define = require "define"
 Event = require "Event"
 Null = require "Null"
 
-if isDev
-  configTypes =
-    isHiding: [ Boolean, Null ]
-    show: Function
-    hide: Function
-    onShowStart: Function.Maybe
-    onShowEnd: Function.Maybe
-    onHideStart: Function.Maybe
-    onHideEnd: Function.Maybe
+isDev and
+configTypes =
+  isHiding: Boolean.or Null
+  show: Function
+  hide: Function
+  onShowStart: Function.Maybe
+  onShowEnd: Function.Maybe
+  onHideStart: Function.Maybe
+  onHideEnd: Function.Maybe
 
 module.exports = (self, config) ->
 
-  assertTypes config, configTypes if isDev
+  isDev and
+  assertTypes config, configTypes
 
   { show, hide } = config
 
