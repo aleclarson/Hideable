@@ -14,7 +14,7 @@
     "Null": "aleclarson/Null#1.0.0",
     "assertTypes": "aleclarson/assertTypes#2.0.0",
     "define": "aleclarson/define#1.0.0",
-    "isDev": "aleclarson/isDev#1.0.0",
+    "isDev": "aleclarson/isDev#2.0.0",
     "postinstall-build": "0.2.x"
   },
   "devDependencies": {

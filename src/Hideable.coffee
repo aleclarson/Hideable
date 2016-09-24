@@ -1,9 +1,8 @@
 
-require "isDev"
-
 assertTypes = require "assertTypes"
 define = require "define"
 Event = require "Event"
+isDev = require "isDev"
 Null = require "Null"
 
 isDev and
