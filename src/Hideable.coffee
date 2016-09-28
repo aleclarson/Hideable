@@ -1,63 +1,72 @@
 
+emptyFunction = require "emptyFunction"
 assertTypes = require "assertTypes"
-define = require "define"
+cloneArgs = require "cloneArgs"
 Event = require "Event"
 isDev = require "isDev"
 Null = require "Null"
 
 isDev and
 configTypes =
-  isHiding: Boolean.or Null
+  isHiding: Boolean.or Null # <- `null` means "could be hiding or not hiding"
   show: Function
   hide: Function
-  onShowStart: Function.Maybe
-  onShowEnd: Function.Maybe
-  onHideStart: Function.Maybe
-  onHideEnd: Function.Maybe
+  disableEvents: Boolean.Maybe
 
-module.exports = (self, config) ->
+module.exports = (config) ->
 
   isDev and
   assertTypes config, configTypes
 
-  { show, hide } = config
+  return (type) ->
 
-  define self,
+    type.defineReactiveValues
+      isHiding: config.isHiding
 
-    isHiding:
-      value: config.isHiding
-      reactive: yes
+    if config.disableEvents is yes
+    then type.definePrototype {__events: eventsDisabled}
+    else type.defineEvents events
 
-    show: ->
+    type.defineMethods prototype
 
-      return if @isHiding is no
-      @isHiding = no
+    type.defineMethods
+      _show: config.show
+      _hide: config.hide
 
-      args = [] # Cannot leak the 'arguments' object.
-      args.push arg for arg in arguments
+    return
 
-      @willShow.emit.apply this, args
+events =
+  willShow: null
+  didShow: null
+  willHide: null
+  didHide: null
 
-      args.push @didShow.emit
-      show.apply this, args
+eventsDisabled =
+  willShow: emptyFunction
+  didShow: emptyFunction
+  willHide: emptyFunction
+  didHide: emptyFunction
 
-    hide: ->
+prototype =
 
-      return if @isHiding is yes
-      @isHiding = yes
+  show: ->
 
-      args = [] # Cannot leak the 'arguments' object.
-      args.push arg for arg in arguments
+    return if @isHiding is no
+    @isHiding = no
 
-      @willHide.emit.apply this, args
+    args = cloneArgs arguments
+    @__events.willShow.apply this, args
 
-      args.push @didHide.emit
-      hide.apply this, args
+    args.push @__events.didShow
+    return @_show.apply this, args
 
-    willShow: Event config.onShowStart
+  hide: ->
 
-    didShow: Event config.onShowEnd
+    return if @isHiding is yes
+    @isHiding = yes
 
-    willHide: Event config.onHideStart
+    args = cloneArgs arguments
+    @__events.willHide.apply this, args
 
-    didHide: Event config.onHideEnd
+    args.push @__events.didHide
+    return @_hide.apply this, args
