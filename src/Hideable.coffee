@@ -13,27 +13,23 @@ configTypes =
   hide: Function
   disableEvents: Boolean.Maybe
 
-module.exports = (config) ->
+module.exports = (type, config) ->
 
   isDev and
   assertTypes config, configTypes
 
-  return (type) ->
+  type.defineReactiveValues
+    isHiding: config.isHiding
 
-    type.defineReactiveValues
-      isHiding: config.isHiding
+  if config.disableEvents is yes
+  then type.definePrototype {__events: eventsDisabled}
+  else type.defineEvents events
 
-    if config.disableEvents is yes
-    then type.definePrototype {__events: eventsDisabled}
-    else type.defineEvents events
+  type.defineMethods prototype
 
-    type.defineMethods prototype
-
-    type.defineMethods
-      _show: config.show
-      _hide: config.hide
-
-    return
+  type.defineMethods
+    _show: config.show
+    _hide: config.hide
 
 events =
   willShow: null
