@@ -11,7 +11,6 @@ configTypes =
   isHiding: Boolean.or Null # <- `null` means "could be hiding or not hiding"
   show: Function
   hide: Function
-  disableEvents: Boolean.Maybe
 
 module.exports = (type, config) ->
 
@@ -21,9 +20,7 @@ module.exports = (type, config) ->
   type.defineReactiveValues
     isHiding: config.isHiding
 
-  if config.disableEvents is yes
-  then type.definePrototype {__events: eventsDisabled}
-  else type.defineEvents events
+  type.addMixin Event.Mixin, events
 
   type.defineMethods prototype
 
@@ -36,12 +33,6 @@ events =
   didShow: null
   willHide: null
   didHide: null
-
-eventsDisabled =
-  willShow: emptyFunction
-  didShow: emptyFunction
-  willHide: emptyFunction
-  didHide: emptyFunction
 
 prototype =
 
