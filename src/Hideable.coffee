@@ -25,8 +25,8 @@ module.exports = (type, config) ->
   type.defineMethods prototype
 
   type.defineMethods
-    _show: config.show
-    _hide: config.hide
+    __show: config.show
+    __hide: config.hide
 
 events =
   willShow: null
@@ -45,7 +45,7 @@ prototype =
     @__events.willShow.apply this, args
 
     args.push @__events.didShow
-    return @_show.apply this, args
+    return @__show.apply this, args
 
   hide: ->
 
@@ -56,4 +56,4 @@ prototype =
     @__events.willHide.apply this, args
 
     args.push @__events.didHide
-    return @_hide.apply this, args
+    return @__hide.apply this, args
