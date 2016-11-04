@@ -44,7 +44,7 @@ prototype =
     args = cloneArgs arguments
     @__events.willShow.apply this, args
 
-    args.push @__events.didShow
+    args[@__show.length - 1] = @__events.didShow
     return @__show.apply this, args
 
   hide: ->
@@ -55,5 +55,5 @@ prototype =
     args = cloneArgs arguments
     @__events.willHide.apply this, args
 
-    args.push @__events.didHide
+    args[@__hide.length - 1] = @__events.didHide
     return @__hide.apply this, args
