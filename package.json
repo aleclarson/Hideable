@@ -1,17 +1,20 @@
 {
   "name": "hideable",
-  "version": "1.0.0",
-  "main": "./js/src/Hideable",
-  "dependencies": {
-    "Event": "aleclarson/Event#2.0.0",
-    "Null": "aleclarson/Null#1.0.0",
-    "assertTypes": "aleclarson/assertTypes#1.0.0",
-    "define": "aleclarson/define#1.0.0",
-    "isDev": "aleclarson/isDev#1.0.0"
+  "version": "1.2.0",
+  "main": "js/Hideable",
+  "plugins": [
+    "lotus-coffee"
+  ],
+  "scripts": {
+    "build": "coffee-build -v 1.11.x -b -o js src",
+    "postinstall": "npm run build"
   },
-  "lotus": {
-    "plugins": [
-      "lotus-coffee"
-    ]
+  "dependencies": {
+    "Event": "aleclarson/Event#2.1.0",
+    "Null": "aleclarson/Null#1.0.1",
+    "assertTypes": "aleclarson/assertTypes#2.0.1",
+    "cloneArgs": "aleclarson/cloneArgs#1.0.0",
+    "emptyFunction": "aleclarson/emptyFunction#1.0.0",
+    "isDev": "aleclarson/isDev#2.0.0"
   }
 }

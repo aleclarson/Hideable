@@ -1,63 +1,59 @@
 
-require "isDev"
-
+emptyFunction = require "emptyFunction"
 assertTypes = require "assertTypes"
-define = require "define"
+cloneArgs = require "cloneArgs"
 Event = require "Event"
+isDev = require "isDev"
 Null = require "Null"
 
-if isDev
-  configTypes =
-    isHiding: [ Boolean, Null ]
-    show: Function
-    hide: Function
-    onShowStart: Function.Maybe
-    onShowEnd: Function.Maybe
-    onHideStart: Function.Maybe
-    onHideEnd: Function.Maybe
+isDev and
+configTypes =
+  isHiding: Boolean.or Null # <- `null` means "could be hiding or not hiding"
+  show: Function
+  hide: Function
 
-module.exports = (self, config) ->
+module.exports = (type, config) ->
 
-  assertTypes config, configTypes if isDev
+  isDev and
+  assertTypes config, configTypes
 
-  { show, hide } = config
+  type.defineReactiveValues
+    isHiding: config.isHiding
 
-  define self,
+  type.addMixin Event.Mixin, events
 
-    isHiding:
-      value: config.isHiding
-      reactive: yes
+  type.defineMethods prototype
 
-    show: ->
+  type.defineMethods
+    __show: config.show
+    __hide: config.hide
 
-      return if @isHiding is no
-      @isHiding = no
+events =
+  willShow: null
+  didShow: null
+  willHide: null
+  didHide: null
 
-      args = [] # Cannot leak the 'arguments' object.
-      args.push arg for arg in arguments
+prototype =
 
-      @willShow.emit.apply this, args
+  show: ->
 
-      args.push @didShow.emit
-      show.apply this, args
+    return if @isHiding is no
+    @isHiding = no
 
-    hide: ->
+    args = cloneArgs arguments
+    @__events.willShow.apply this, args
 
-      return if @isHiding is yes
-      @isHiding = yes
+    args[@__show.length - 1] = @__events.didShow
+    return @__show.apply this, args
 
-      args = [] # Cannot leak the 'arguments' object.
-      args.push arg for arg in arguments
+  hide: ->
 
-      @willHide.emit.apply this, args
+    return if @isHiding is yes
+    @isHiding = yes
 
-      args.push @didHide.emit
-      hide.apply this, args
+    args = cloneArgs arguments
+    @__events.willHide.apply this, args
 
-    willShow: Event config.onShowStart
-
-    didShow: Event config.onShowEnd
-
-    willHide: Event config.onHideStart
-
-    didHide: Event config.onHideEnd
+    args[@__hide.length - 1] = @__events.didHide
+    return @__hide.apply this, args
