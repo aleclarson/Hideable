@@ -10,7 +10,7 @@
     "postinstall": "npm run build"
   },
   "dependencies": {
-    "Event": "aleclarson/Event#2.1.1",
+    "Event": "aleclarson/Event#3.0.0",
     "Null": "aleclarson/Null#1.0.1",
     "assertTypes": "aleclarson/assertTypes#2.0.1",
     "cloneArgs": "aleclarson/cloneArgs#1.0.0",

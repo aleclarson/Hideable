@@ -28,10 +28,10 @@ module.exports = (type, config) ->
     __hide: config.hide
 
 createValues = ->
-  willShow: Event.sync()
-  didShow: Event.sync()
-  willHide: Event.sync()
-  didHide: Event.sync()
+  willShow: Event()
+  didShow: Event()
+  willHide: Event()
+  didHide: Event()
 
 prototype =
 
@@ -41,9 +41,9 @@ prototype =
     @isHiding = no
 
     args = cloneArgs arguments
-    @willShow.emit.apply this, args
+    @willShow.applyEmit args
 
-    args[@__show.length - 1] = @didShow.emit
+    args[@__show.length - 1] = @didShow.bindEmit()
     return @__show.apply this, args
 
   hide: ->
@@ -52,7 +52,7 @@ prototype =
     @isHiding = yes
 
     args = cloneArgs arguments
-    @willHide.emit.apply this, args
+    @willHide.applyEmit args
 
-    args[@__hide.length - 1] = @didHide.emit
+    args[@__hide.length - 1] = @didHide.bindEmit()
     return @__hide.apply this, args
