@@ -20,19 +20,18 @@ module.exports = (type, config) ->
   type.defineReactiveValues
     isHiding: config.isHiding
 
-  type.addMixin Event.Mixin, events
-
+  type.defineValues createValues
   type.defineMethods prototype
 
   type.defineMethods
     __show: config.show
     __hide: config.hide
 
-events =
-  willShow: null
-  didShow: null
-  willHide: null
-  didHide: null
+createValues = ->
+  willShow: Event()
+  didShow: Event()
+  willHide: Event()
+  didHide: Event()
 
 prototype =
 
@@ -42,9 +41,9 @@ prototype =
     @isHiding = no
 
     args = cloneArgs arguments
-    @__events.willShow.apply this, args
+    @willShow.applyEmit args
 
-    args[@__show.length - 1] = @__events.didShow
+    args[@__show.length - 1] = @didShow.bindEmit()
     return @__show.apply this, args
 
   hide: ->
@@ -53,7 +52,7 @@ prototype =
     @isHiding = yes
 
     args = cloneArgs arguments
-    @__events.willHide.apply this, args
+    @willHide.applyEmit args
 
-    args[@__hide.length - 1] = @__events.didHide
+    args[@__hide.length - 1] = @didHide.bindEmit()
     return @__hide.apply this, args
