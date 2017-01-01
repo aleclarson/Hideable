@@ -1,22 +1,31 @@
 
-# hideable v1.2.1 [![stable](http://badges.github.io/stability-badges/dist/stable.svg)](http://github.com/badges/stability-badges)
+# Hideable v1.3.0 [![stable](http://badges.github.io/stability-badges/dist/stable.svg)](http://github.com/badges/stability-badges)
 
 ```coffee
-Hideable = require "hideable"
+Hideable = require "Hideable"
 
-obj = Hideable {},
+type = Type()
 
-  onShow: ->
-    # Do stuff when 'show()' is called!
+type.addMixin Hideable,
 
-  onHide: ->
-    # Do stuff when 'hide()' is called!
+  # The default value of `isHiding`. Must be a boolean or null.
+  isHiding: yes
 
-obj.isHiding # = false
+  show: (done) ->
+    # TODO: Perform show animation.
 
-obj.hide()
+  hide: (done) ->
+    # TODO: Perform hide animation.
 
-obj.show()
+Foo = type.build()
+
+foo = Foo()
+foo.isHiding # => true
+
+foo.show()
+foo.isHiding # => false
+
+foo.hide()
+foo.isHiding # => true
 ```
 
-*Documentation at a later date*

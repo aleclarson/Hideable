@@ -1,6 +1,6 @@
 {
-  "name": "hideable",
-  "version": "1.2.1",
+  "name": "Hideable",
+  "version": "1.3.0",
   "main": "js/Hideable",
   "plugins": [
     "lotus-coffee"
@@ -10,6 +10,7 @@
     "postinstall": "npm run build"
   },
   "dependencies": {
+    "Builder": "aleclarson/Builder#2.2.0",
     "Event": "aleclarson/Event#3.0.0",
     "Null": "aleclarson/Null#1.0.1",
     "assertTypes": "aleclarson/assertTypes#2.0.1",
