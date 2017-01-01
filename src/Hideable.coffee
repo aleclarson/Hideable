@@ -2,13 +2,14 @@
 emptyFunction = require "emptyFunction"
 assertTypes = require "assertTypes"
 cloneArgs = require "cloneArgs"
+Builder = require "Builder"
 Event = require "Event"
 isDev = require "isDev"
 Null = require "Null"
 
 isDev and
 configTypes =
-  isHiding: Boolean.or Null # <- `null` means "could be hiding or not hiding"
+  isHiding: Boolean.or Null
   show: Function
   hide: Function
 
@@ -17,23 +18,29 @@ module.exports = (type, config) ->
   isDev and
   assertTypes config, configTypes
 
+  # When `config.isHiding` equals null, its visibility is "unknown".
   type.defineReactiveValues
     isHiding: config.isHiding
-
-  type.defineValues createValues
-  type.defineMethods prototype
 
   type.defineMethods
     __show: config.show
     __hide: config.hide
 
-createValues = ->
+  mixin.apply type
+
+mixin = Builder.Mixin()
+
+mixin.defineValues ->
+
   willShow: Event()
+
   didShow: Event()
+
   willHide: Event()
+
   didHide: Event()
 
-prototype =
+mixin.defineMethods
 
   show: ->
 
