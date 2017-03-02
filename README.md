@@ -1,5 +1,5 @@
 
-# Hideable v1.3.1 [![stable](http://badges.github.io/stability-badges/dist/stable.svg)](http://github.com/badges/stability-badges)
+# Hideable v1.3.2 [![stable](http://badges.github.io/stability-badges/dist/stable.svg)](http://github.com/badges/stability-badges)
 
 ```coffee
 Hideable = require "Hideable"
