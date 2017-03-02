@@ -3,7 +3,7 @@ emptyFunction = require "emptyFunction"
 assertTypes = require "assertTypes"
 cloneArgs = require "cloneArgs"
 Builder = require "Builder"
-Event = require "Event"
+Event = require "eve"
 isDev = require "isDev"
 Null = require "Null"
 
