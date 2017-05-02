@@ -1,7 +1,7 @@
 
 emptyFunction = require "emptyFunction"
 assertTypes = require "assertTypes"
-cloneArgs = require "cloneArgs"
+sliceArray = require "sliceArray"
 Builder = require "Builder"
 Event = require "eve"
 isDev = require "isDev"
@@ -47,7 +47,7 @@ mixin.defineMethods
     return if @isHiding is no
     @isHiding = no
 
-    args = cloneArgs arguments
+    args = sliceArray arguments
     @willShow.applyEmit args
 
     args[@__show.length - 1] = @didShow.bindEmit()
@@ -58,7 +58,7 @@ mixin.defineMethods
     return if @isHiding is yes
     @isHiding = yes
 
-    args = cloneArgs arguments
+    args = sliceArray arguments
     @willHide.applyEmit args
 
     args[@__hide.length - 1] = @didHide.bindEmit()
